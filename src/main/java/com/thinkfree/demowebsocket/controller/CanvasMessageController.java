@@ -26,6 +26,7 @@ public class CanvasMessageController {
     }
 
     @MessageMapping("/canvas/draw")
+    @SendTo("/topic/canvas/draw")
     public void circleDraw(CircleDrawRequest request) {
 
     }
@@ -37,7 +38,7 @@ public class CanvasMessageController {
         return request;
     }
 
-    @MessageMapping("/cursor/move")
+    @MessageMapping("/canvas/cursor")
     @SendTo("/topic/canvas/cursor")
     public CursorMoveRequest moveCursor(CursorMoveRequest request) {
         // 커서 이동은 DB에 저장할 필요 없이 즉시 브로드캐스팅만 수행
