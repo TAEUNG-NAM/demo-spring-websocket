@@ -216,11 +216,11 @@
         const [x, y] = getCanvasPos(e);
         const sender = document.getElementById('sender').value || 'anonymous';
 
-        stompClient.send('/app/cursor/move', {}, JSON.stringify({
+        stompClient.send('/app/canvas/cursor', {}, JSON.stringify({
             senderId: myCursorId,
             x: x,
             y: y,
-            color: '#2247ff',
+            color: '#ff158b',
             sender: sender
         }));
     }
