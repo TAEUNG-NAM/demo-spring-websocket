@@ -1,6 +1,10 @@
-package com.thinkfree.demowebsocket.controller;
+package com.thinkfree.demowebsocket.chart.controller;
 
-import com.thinkfree.demowebsocket.dto.*;
+import com.thinkfree.demowebsocket.chart.dto.CreateChartRequest;
+import com.thinkfree.demowebsocket.chart.dto.UpdateBarRequest;
+import com.thinkfree.demowebsocket.chart.dto.UpdateChartRequest;
+import com.thinkfree.demowebsocket.common.dto.ApiResponse;
+import com.thinkfree.demowebsocket.common.dto.ApiResponseCode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +18,7 @@ public class ChartController {
     @PostMapping("/canvas/chart")
     public ApiResponse<String> createChart(@RequestBody CreateChartRequest request) {
         // 실제 로직은 구현하지 않음 (문서 노출용)
-        return ApiResponse.of(ResponseCode.CHART_CREATED);
+        return ApiResponse.of(ApiResponseCode.CHART_CREATED);
     }
 
     @Operation(summary = "차트 옵션 변경 (HTTP)", description = "선택된 차트의 이름/x축/y축을 변경한다.")

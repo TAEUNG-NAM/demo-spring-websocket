@@ -1,8 +1,14 @@
-package com.thinkfree.demowebsocket.controller;
+package com.thinkfree.demowebsocket.websocket.controller;
 
-import com.thinkfree.demowebsocket.dto.ChatMessageRequest;
-import com.thinkfree.demowebsocket.dto.UpdateCircleRequest;
-import com.thinkfree.demowebsocket.dto.CursorMoveMessage;
+import com.thinkfree.demowebsocket.circle.dto.CircleDrawEvent;
+import com.thinkfree.demowebsocket.circle.dto.CircleResizeEvent;
+import com.thinkfree.demowebsocket.circle.dto.UpdateCircleRequest;
+import com.thinkfree.demowebsocket.dto.*;
+import com.thinkfree.demowebsocket.common.dto.ApiResponse;
+import com.thinkfree.demowebsocket.common.dto.ApiResponseCode;
+import com.thinkfree.demowebsocket.websocket.dto.CursorMoveEvent;
+import com.thinkfree.demowebsocket.websocket.dto.WsAction;
+import com.thinkfree.demowebsocket.websocket.dto.WsMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -25,8 +31,8 @@ public class WebSocketController {
 
     @MessageMapping("/canvas/draw")
     @SendTo("/topic/canvas/draw")
-    public void circleDraw(UpdateCircleRequest request) {
-
+    public WsMessage<CircleDrawEvent> circleDraw(CircleDrawEvent request) {
+        return new WsMessage<>(WsAction.CIRCLE_DRAW_START, request);
     }
 
     @MessageMapping("/chat/message")
@@ -43,9 +49,10 @@ public class WebSocketController {
      */
     @MessageMapping("/canvas/cursor")
     @SendTo("/topic/canvas/cursor")
-    public CursorMoveMessage moveCursor(CursorMoveMessage request) {
+    public WsMessage<CursorMoveEvent> moveCursor(CursorMoveEvent request) {
         // 커서 이동은 DB에 저장할 필요 없이 즉시 브로드캐스팅만 수행
-        return request;
+//        log.info("Received message : {}", new WsMessage<>(WsAction.CURSOR_MOVE, request));
+        return new WsMessage<>(WsAction.CURSOR_MOVE, request);
     }
 
 }

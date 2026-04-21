@@ -111,7 +111,7 @@
 
             stompClient.subscribe('/topic/canvas/cursor', function (message) {
                 const cursor = JSON.parse(message.body);
-                moveCursor(cursor);
+                moveCursor(cursor.payload);
             });
         }, function (error) {
             console.error('WebSocket connection error: ' + error);

@@ -1,9 +1,9 @@
-package com.thinkfree.demowebsocket.controller;
+package com.thinkfree.demowebsocket.circle.controller;
 
-import com.thinkfree.demowebsocket.dto.ApiResponse;
-import com.thinkfree.demowebsocket.dto.CreateCircleRequest;
-import com.thinkfree.demowebsocket.dto.ResponseCode;
-import com.thinkfree.demowebsocket.dto.UpdateCircleRequest;
+import com.thinkfree.demowebsocket.common.dto.ApiResponse;
+import com.thinkfree.demowebsocket.circle.dto.CreateCircleRequest;
+import com.thinkfree.demowebsocket.common.dto.ApiResponseCode;
+import com.thinkfree.demowebsocket.circle.dto.UpdateCircleRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +17,7 @@ public class CircleController {
     @PostMapping("/canvas/circles")
     public ApiResponse<String> createCircle(@RequestBody CreateCircleRequest request) {
         // 실제 로직은 구현하지 않음 (문서 노출용)
-        return ApiResponse.of(ResponseCode.CIRCLE_CREATED);
+        return ApiResponse.of(ApiResponseCode.CIRCLE_CREATED);
     }
 
     @Operation(summary = "원 단건 삭제 (HTTP)", description = "선택된 원 단건을 삭제한다.")

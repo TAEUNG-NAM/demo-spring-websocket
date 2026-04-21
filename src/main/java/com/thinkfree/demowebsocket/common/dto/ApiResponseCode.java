@@ -1,11 +1,11 @@
-package com.thinkfree.demowebsocket.dto;
+package com.thinkfree.demowebsocket.common.dto;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum ResponseCode {
+public enum ApiResponseCode {
 
     // 시스템/연결 관련
     SOCKET_CONNECTED("SYS_001", "소켓이 연결되었습니다."),

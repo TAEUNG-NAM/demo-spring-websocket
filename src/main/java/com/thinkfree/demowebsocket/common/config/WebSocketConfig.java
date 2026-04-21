@@ -1,4 +1,4 @@
-package com.thinkfree.demowebsocket.global.config;
+package com.thinkfree.demowebsocket.common.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;

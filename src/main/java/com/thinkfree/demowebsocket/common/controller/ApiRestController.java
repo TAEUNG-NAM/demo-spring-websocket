@@ -1,9 +1,9 @@
-package com.thinkfree.demowebsocket.controller;
+package com.thinkfree.demowebsocket.common.controller;
 
 import com.thinkfree.demowebsocket.dto.ChatMessageRequest;
-import com.thinkfree.demowebsocket.dto.UpdateCircleRequest;
-import com.thinkfree.demowebsocket.dto.ApiResponse;
-import com.thinkfree.demowebsocket.dto.ResponseCode;
+import com.thinkfree.demowebsocket.circle.dto.UpdateCircleRequest;
+import com.thinkfree.demowebsocket.common.dto.ApiResponse;
+import com.thinkfree.demowebsocket.common.dto.ApiResponseCode;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -22,7 +22,7 @@ public class ApiRestController {
         Map<String, String> dummy = new HashMap<>();
         dummy.put("CNV", "DUMMY_CANVAS");
         dummy.put("CNV2", "DUMMY_CANVAS2");
-        return ApiResponse.of(ResponseCode.CANVAS_LOADED, dummy.toString());
+        return ApiResponse.of(ApiResponseCode.CANVAS_LOADED, dummy.toString());
     }
 
     @PostMapping("/api/v1/circle")
@@ -32,35 +32,35 @@ public class ApiRestController {
         circle.put("x", "15");
         circle.put("y", "120");
         circle.put("color", "#0000000");
-        return ApiResponse.of(ResponseCode.CIRCLE_CREATED, circle.toString());
+        return ApiResponse.of(ApiResponseCode.CIRCLE_CREATED, circle.toString());
     }
 
     @Operation(summary = "웹소켓 연결", description = "Destination: ws://localhost:8080/ws-stomp")
-    @PostMapping("/docs/websocket/connect")
+    @RequestMapping(path = "/docs/websocket/connect", method = RequestMethod.OPTIONS)
     public void webSocketConnectDocs() {
         // 실제 로직은 구현하지 않음 (문서 노출용)
     }
 
-    @Operation(summary = "실시간 커서 공유 (WebSocket)", description = "Destination: /app/canvas/cursor <br> Subscribe: /topic/canvas/cursor")
-    @PostMapping("/docs/app/canvas/cursor")
+    @Operation(summary = "실시간 커서 공유 (WebSocket)", description = "Destination: /app/canvas/cursor <br> Subscribe: /topic/canvas")
+    @RequestMapping(path = "/docs/app/canvas/cursor", method = RequestMethod.OPTIONS)
     public void cursorMoveDocs() {
         // 실제 로직은 구현하지 않음 (문서 노출용)
     }
 
     @Operation(summary = "원 그리기 (WebSocket)", description = "Destination: /app/canvas/draw <br> Subscribe: /topic/canvas")
-    @PostMapping("/docs/app/canvas/draw")
+    @RequestMapping(path = "/docs/app/canvas/draw", method = RequestMethod.OPTIONS)
     public void circleDrawDocs(@RequestBody UpdateCircleRequest request) {
         // 실제 로직은 구현하지 않음 (문서 노출용)
     }
 
     @Operation(summary = "원 크기 조정 (WebSocket)", description = "Destination: /app/canvas/resize <br> Subscribe: /topic/canvas")
-    @PostMapping("/docs/app/canvas/resize")
+    @RequestMapping(path = "/docs/app/canvas/resize", method = RequestMethod.OPTIONS)
     public void circleResizeDocs(@RequestBody UpdateCircleRequest request) {
         // 실제 로직은 구현하지 않음 (문서 노출용)
     }
 
     @Operation(summary = "원 포커스 (WebSocket)", description = "Destination: /app/canvas/focus <br> Subscribe: /topic/canvas")
-    @PostMapping("/docs/app/canvas/focus")
+    @RequestMapping(path = "/docs/app/canvas/focus", method = RequestMethod.OPTIONS)
     public void circleFocusDocs(@RequestBody UpdateCircleRequest request) {
         // 실제 로직은 구현하지 않음 (문서 노출용)
     }
