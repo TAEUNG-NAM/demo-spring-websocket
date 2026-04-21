@@ -1,34 +1,40 @@
 package com.thinkfree.demowebsocket.controller;
 
-import com.thinkfree.demowebsocket.dto.CircleDrawRequest;
+import com.thinkfree.demowebsocket.dto.ApiResponse;
+import com.thinkfree.demowebsocket.dto.CreateCircleRequest;
+import com.thinkfree.demowebsocket.dto.ResponseCode;
+import com.thinkfree.demowebsocket.dto.UpdateCircleRequest;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "원 API", description = "원 생성/변경/삭제")
 @RestController
 @RequestMapping("/api/v1")
-public class ChartController {
+public class CircleController {
 
-    @Operation(summary = "차트 생성 (HTTP)", description = "선택된 원으로 차트를 생성한다.")
-    @PostMapping("/canvas/chart")
-    public void createChart(@RequestBody CircleDrawRequest request) {
+    @Operation(summary = "원 생성 (HTTP)", description = "그려진 원을 생성한다.")
+    @PostMapping("/canvas/circles")
+    public ApiResponse<String> createCircle(@RequestBody CreateCircleRequest request) {
+        // 실제 로직은 구현하지 않음 (문서 노출용)
+        return ApiResponse.of(ResponseCode.CIRCLE_CREATED);
+    }
+
+    @Operation(summary = "원 단건 삭제 (HTTP)", description = "선택된 원 단건을 삭제한다.")
+    @DeleteMapping("/canvas/circles/{id}")
+    public void deleteCircle(@PathVariable String id) {
         // 실제 로직은 구현하지 않음 (문서 노출용)
     }
 
-    @Operation(summary = "차트 삭제 (HTTP)", description = "선택된 차트를 삭제한다.")
-    @DeleteMapping("/canvas/chart")
-    public void deleteChart(@RequestBody CircleDrawRequest request) {
+    @Operation(summary = "원 다건 삭제 (HTTP)", description = "선택된 원 다건을 삭제한다.")
+    @DeleteMapping("/canvas/circles")
+    public void deleteCircles(@RequestParam String ids) {
         // 실제 로직은 구현하지 않음 (문서 노출용)
     }
 
-    @Operation(summary = "차트 이름 변경 (HTTP)", description = "선택된 차트의 이름을 변경한다.")
-    @PostMapping("/canvas/chart")
-    public void updateChartName(@RequestBody CircleDrawRequest request) {
-        // 실제 로직은 구현하지 않음 (문서 노출용)
-    }
-
-    @Operation(summary = "차트 막대 값 변경 (HTTP)", description = "선택된 차트의 막대 바 값을 변경한다.")
-    @PostMapping("/canvas/chart")
-    public void updateChartBarValue(@RequestBody CircleDrawRequest request) {
+    @Operation(summary = "원 옵션 변경 (HTTP)", description = "선택된 원의 사용여부/크기/색상을 변경한다.")
+    @PatchMapping("/canvas/circles/{id}")
+    public void updateCircle(@PathVariable String id, @RequestBody UpdateCircleRequest request) {
         // 실제 로직은 구현하지 않음 (문서 노출용)
     }
 }

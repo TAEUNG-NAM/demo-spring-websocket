@@ -1,15 +1,18 @@
 package com.thinkfree.demowebsocket.dto;
 
-public class UpdateChartRequest {
-    public class UpdateBarRequest {
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Positive;
 
-        private String label;
+@Schema(description = "막대 변경 요청")
+public class UpdateBarRequest {
 
-        @Positive
-        private Double value;
+    @Schema(description = "라벨", example = "키친준")
+    private String label;
 
-        private String color;
+    @Positive
+    private Double value;
 
-        // getter, setter
-    }
+    @Schema(description = "바 색상", example = "#00FF00")
+    private String color;
+
 }

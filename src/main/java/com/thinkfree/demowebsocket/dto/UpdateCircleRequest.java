@@ -7,7 +7,8 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CircleDrawRequest {
+@Schema(description = "원 변경 요청")
+public class UpdateCircleRequest {
 
     @Schema(description = "X좌표", example = "34.5")
     private Double centerX;
@@ -21,6 +22,6 @@ public class CircleDrawRequest {
     @Schema(description = "색상", example = "#00FF00")
     private String color;
 
-    @Schema(description = "유저 ID", example = "user-1")
-    private String senderId;
+//    @Schema(description = "유저 ID", example = "user-1")
+//    private String userId;
 }

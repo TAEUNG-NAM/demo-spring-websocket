@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CursorMoveRequest {
+public class CursorMoveMessage {
     private String senderId;  // 커서ID
     private Double x;         // X 좌표
     private Double y;         // Y 좌표
