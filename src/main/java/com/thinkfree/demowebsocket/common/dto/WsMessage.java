@@ -1,4 +1,4 @@
-package com.thinkfree.demowebsocket.websocket.dto;
+package com.thinkfree.demowebsocket.cursor.dto;
 
 import lombok.*;
 

@@ -1,11 +1,7 @@
 package com.thinkfree.demowebsocket.websocket.controller;
 
-import com.thinkfree.demowebsocket.circle.dto.CircleDrawEvent;
-import com.thinkfree.demowebsocket.circle.dto.CircleResizeEvent;
-import com.thinkfree.demowebsocket.circle.dto.UpdateCircleRequest;
+import com.thinkfree.demowebsocket.websocket.dto.CircleDrawEvent;
 import com.thinkfree.demowebsocket.dto.*;
-import com.thinkfree.demowebsocket.common.dto.ApiResponse;
-import com.thinkfree.demowebsocket.common.dto.ApiResponseCode;
 import com.thinkfree.demowebsocket.websocket.dto.CursorMoveEvent;
 import com.thinkfree.demowebsocket.websocket.dto.WsAction;
 import com.thinkfree.demowebsocket.websocket.dto.WsMessage;
