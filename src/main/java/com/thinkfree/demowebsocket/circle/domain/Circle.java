@@ -9,8 +9,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @AllArgsConstructor
 @ToString
 @Builder
-@Document(collection = "shapes")
+@Document(collection = "circles")
 public class Circle {
+
     @Id
     private String id;
 

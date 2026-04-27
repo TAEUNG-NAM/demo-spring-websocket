@@ -14,27 +14,42 @@ public class CreateCircleRequest {
 
     @Schema(description = "X좌표", example = "34.5")
     @NotBlank
-    private Double centerX;
+    private double x;
 
     @Schema(description = "Y좌표", example = "-77")
     @NotBlank
-    private Double centerY;
+    private double y;
 
-    @Schema(description = "반지름", example = "45")
+    @Schema(description = "지름", example = "45")
     @NotBlank
-    private Double radius;
+    private double size;
 
-    @Schema(description = "색상", example = "#00FF00")
+    @Schema(description = "색상 R", example = "0.4231234")
     @NotBlank
-    private String color;
+    private double r;
+
+    @Schema(description = "색상 G", example = "0.1231552")
+    @NotBlank
+    private double g;
+
+    @Schema(description = "색상 B", example = "0.9374712")
+    @NotBlank
+    private double b;
+
+    @Schema(description = "투명도", example = "1")
+    @NotBlank
+    private double a;
 
 
     public Circle toEntity() {
         return Circle.builder()
-                .x(this.centerX)
-                .y(this.centerY)
-                .radius(this.radius)
-                .color(this.color)
+                .x(this.x)
+                .y(this.y)
+                .size(this.size)
+                .r(this.r)
+                .g(this.g)
+                .b(this.b)
+                .a(this.a)
                 .build();
     }
 }

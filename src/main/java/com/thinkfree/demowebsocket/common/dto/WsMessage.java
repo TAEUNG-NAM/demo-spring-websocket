@@ -1,5 +1,6 @@
-package com.thinkfree.demowebsocket.cursor.dto;
+package com.thinkfree.demowebsocket.common.dto;
 
+import com.thinkfree.demowebsocket.cursor.dto.WsAction;
 import lombok.*;
 
 @Getter

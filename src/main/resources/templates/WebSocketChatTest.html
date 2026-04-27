@@ -91,11 +91,10 @@
     let stompClient = null;
     let canvas = null;
     let ctx = null;
-    let isDrawing = false;
-    let lastX = 0;
-    let lastY = 0;
     const myCursorId = 'cursor-' + Math.random().toString(36).slice(2, 9);
     const remoteCursors = new Map();
+    const renderedCircleIds = new Set();
+    const DEFAULT_CIRCLE_SIZE = 48;
 
     function connect() {
         const socket = new WebSocket('ws://localhost:8080/ws');
@@ -109,9 +108,11 @@
                 showNotification(message.body);
             });
 
-            stompClient.subscribe('/topic/canvas/cursor', function (message) {
-                const cursor = JSON.parse(message.body);
-                moveCursor(cursor.payload);
+            stompClient.subscribe('/topic/canvas', function (message) {
+                console.log(message);
+                const wsMessage = JSON.parse(message.body);
+                console.log(wsMessage);
+                handleCanvasMessage(wsMessage);
             });
         }, function (error) {
             console.error('WebSocket connection error: ' + error);
@@ -139,6 +140,23 @@
         notifications.appendChild(notification);
     }
 
+    function handleCanvasMessage(wsMessage) {
+        if (!wsMessage) return;
+
+        switch (wsMessage.action) {
+            case 'CURSOR_MOVE':
+                moveCursor(wsMessage.payload);
+                break;
+            case 'CIRCLE_CREATED':
+                renderCreatedCircle(wsMessage.payload);
+                break;
+            default:
+                if (wsMessage.payload && wsMessage.payload.senderId) {
+                    moveCursor(wsMessage.payload);
+                }
+        }
+    }
+
     function initCanvas() {
         canvas = document.getElementById('drawCanvas');
         ctx = canvas.getContext('2d');
@@ -147,11 +165,7 @@
 
         window.addEventListener('resize', resizeCanvas);
 
-        canvas.addEventListener('mousedown', startDraw);
-        canvas.addEventListener('mousemove', handleCanvasMove);
-        canvas.addEventListener('mouseup', stopDraw);
-        canvas.addEventListener('mouseleave', stopDraw);
-
+        canvas.addEventListener('click', handleCanvasClick);
         canvas.addEventListener('mousemove', sendCursorMove);
     }
 
@@ -176,30 +190,9 @@
         }
     }
 
-    function startDraw(e) {
-        isDrawing = true;
-        [lastX, lastY] = getCanvasPos(e);
-    }
-
-    function stopDraw() {
-        isDrawing = false;
-    }
-
-    function handleCanvasMove(e) {
-        if (!isDrawing) return;
-
+    function handleCanvasClick(e) {
         const [x, y] = getCanvasPos(e);
-
-        ctx.beginPath();
-        ctx.moveTo(lastX, lastY);
-        ctx.lineTo(x, y);
-        ctx.strokeStyle = '#222';
-        ctx.lineWidth = 2;
-        ctx.lineCap = 'round';
-        ctx.stroke();
-
-        lastX = x;
-        lastY = y;
+        createCircle(x, y);
     }
 
     function getCanvasPos(e) {
@@ -223,6 +216,49 @@
             color: '#ff158b',
             sender: sender
         }));
+    }
+
+    async function createCircle(x, y) {
+        try {
+            const response = await fetch('/api/v1/canvas/circles', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(buildCirclePayload(x, y))
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+            }
+
+            showNotification(`Circle create requested at (${Math.round(x)}, ${Math.round(y)})`);
+        } catch (error) {
+            console.error('Circle creation failed:', error);
+            showNotification(`Circle creation failed: ${error.message}`);
+        }
+    }
+
+    function buildCirclePayload(x, y) {
+        const color = randomCircleColor();
+
+        return {
+            x: x,
+            y: y,
+            size: DEFAULT_CIRCLE_SIZE,
+            r: color.r,
+            g: color.g,
+            b: color.b,
+            a: 0.85
+        };
+    }
+
+    function randomCircleColor() {
+        return {
+            r: Math.random(),
+            g: Math.random(),
+            b: Math.random()
+        };
     }
 
     function moveCursor(cursor) {
@@ -249,6 +285,70 @@
 
         const label = cursorEl.querySelector('.remote-cursor-label');
         label.textContent = cursor.sender || cursor.senderId;
+    }
+
+    function renderCreatedCircle(circle) {
+        if (!circle) return;
+
+        if (circle.id && renderedCircleIds.has(circle.id)) {
+            return;
+        }
+
+        drawCircle(circle);
+
+        if (circle.id) {
+            renderedCircleIds.add(circle.id);
+        }
+
+        showNotification(`Circle created${circle.id ? `: ${circle.id}` : ''}`);
+    }
+
+    function drawCircle(circle) {
+        const x = Number(circle.x);
+        const y = Number(circle.y);
+        const radius = Number(circle.size) / 2;
+
+        if (!Number.isFinite(x) || !Number.isFinite(y) || !Number.isFinite(radius) || radius <= 0) {
+            return;
+        }
+
+        ctx.beginPath();
+        ctx.arc(x, y, radius, 0, Math.PI * 2);
+        ctx.fillStyle = toCircleFill(circle);
+        ctx.fill();
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = 'rgba(0, 0, 0, 0.15)';
+        ctx.stroke();
+    }
+
+    function toCircleFill(circle) {
+        const r = toColorChannel(circle.r);
+        const g = toColorChannel(circle.g);
+        const b = toColorChannel(circle.b);
+        const a = toAlphaChannel(circle.a);
+        return `rgba(${r}, ${g}, ${b}, ${a})`;
+    }
+
+    function toColorChannel(value) {
+        const numeric = Number(value);
+
+        if (!Number.isFinite(numeric)) {
+            return 0;
+        }
+
+        const scaled = numeric <= 1 ? numeric * 255 : numeric;
+        return Math.max(0, Math.min(255, Math.round(scaled)));
+    }
+
+    function toAlphaChannel(value) {
+        const numeric = Number(value);
+
+        if (!Number.isFinite(numeric)) {
+            return 1;
+        }
+
+        const scaled = numeric <= 1 ? numeric : numeric / 255;
+        return Math.max(0, Math.min(1, scaled));
     }
 
     connect();

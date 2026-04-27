@@ -1,9 +1,9 @@
 package com.thinkfree.demowebsocket.cursor.controller;
 
 import com.thinkfree.demowebsocket.circle.dto.CircleDrawEvent;
+import com.thinkfree.demowebsocket.common.dto.WsMessage;
 import com.thinkfree.demowebsocket.cursor.dto.CursorMoveEvent;
 import com.thinkfree.demowebsocket.cursor.dto.WsAction;
-import com.thinkfree.demowebsocket.cursor.dto.WsMessage;
 import com.thinkfree.demowebsocket.dto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +26,7 @@ public class WebSocketController {
     }
 
     @MessageMapping("/canvas/draw")
-    @SendTo("/topic/canvas/draw")
+    @SendTo("/topic/canvas")
     public WsMessage<CircleDrawEvent> circleDraw(CircleDrawEvent request) {
         return new WsMessage<>(WsAction.CIRCLE_DRAW_START, request);
     }
@@ -44,7 +44,7 @@ public class WebSocketController {
      * @return
      */
     @MessageMapping("/canvas/cursor")
-    @SendTo("/topic/canvas/cursor")
+    @SendTo("/topic/canvas")
     public WsMessage<CursorMoveEvent> moveCursor(CursorMoveEvent request) {
         // 커서 이동은 DB에 저장할 필요 없이 즉시 브로드캐스팅만 수행
 //        log.info("Received message : {}", new WsMessage<>(WsAction.CURSOR_MOVE, request));

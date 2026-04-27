@@ -3,8 +3,11 @@ package com.thinkfree.demowebsocket.circle.service;
 import com.thinkfree.demowebsocket.circle.domain.Circle;
 import com.thinkfree.demowebsocket.circle.dto.CreateCircleRequest;
 import com.thinkfree.demowebsocket.circle.repository.CircleRepository;
+import com.thinkfree.demowebsocket.common.dto.WsMessage;
+import com.thinkfree.demowebsocket.cursor.dto.WsAction;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,10 +19,12 @@ import java.util.Optional;
 public class CircleService {
 
     private final CircleRepository circleRepository;
+    private final SimpMessagingTemplate messagingTemplate;
 
     public Circle createCircle(CreateCircleRequest request) {
-        Circle savedCircle = request.toEntity();
-        return circleRepository.save(savedCircle);
+        Circle circle = circleRepository.save(request.toEntity());
+        messagingTemplate.convertAndSend("/topic/canvas", new WsMessage<>(WsAction.CIRCLE_CREATED, circle));
+        return circle;
     }
 
     public List<Circle> getAllCircles() {
