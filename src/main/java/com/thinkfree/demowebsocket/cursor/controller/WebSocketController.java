@@ -1,10 +1,10 @@
-package com.thinkfree.demowebsocket.websocket.controller;
+package com.thinkfree.demowebsocket.cursor.controller;
 
-import com.thinkfree.demowebsocket.websocket.dto.CircleDrawEvent;
+import com.thinkfree.demowebsocket.circle.dto.CircleDrawEvent;
+import com.thinkfree.demowebsocket.cursor.dto.CursorMoveEvent;
+import com.thinkfree.demowebsocket.cursor.dto.WsAction;
+import com.thinkfree.demowebsocket.cursor.dto.WsMessage;
 import com.thinkfree.demowebsocket.dto.*;
-import com.thinkfree.demowebsocket.websocket.dto.CursorMoveEvent;
-import com.thinkfree.demowebsocket.websocket.dto.WsAction;
-import com.thinkfree.demowebsocket.websocket.dto.WsMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;

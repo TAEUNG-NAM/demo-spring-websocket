@@ -1,2 +1,5 @@
-package com.thinkfree.demowebsocket.circle.controller;public class CircleMessageController {
+package com.thinkfree.demowebsocket.circle.controller;
+
+public class CircleMessageController {
+
 }

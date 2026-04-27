@@ -1,5 +1,6 @@
 package com.thinkfree.demowebsocket.circle.dto;
 
+import com.thinkfree.demowebsocket.circle.domain.Circle;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
@@ -27,6 +28,13 @@ public class CreateCircleRequest {
     @NotBlank
     private String color;
 
-    @Schema(description = "유저 ID", example = "user-1")
-    private String userId;
+
+    public Circle toEntity() {
+        return Circle.builder()
+                .x(this.centerX)
+                .y(this.centerY)
+                .radius(this.radius)
+                .color(this.color)
+                .build();
+    }
 }
