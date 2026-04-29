@@ -68,15 +68,22 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: ${{ secrets.SERVER_PORT }}
+          script_stop: false # 스크립트 실패해도 멈추지 말라는 옵션(kill 안될 수도 있어서)
           script: |
+            echo "기존 배포 중인 애플리케이션 종료 후 새로운 어플리케이션 실행!"
             cd /home/ubuntu/app
-
             JAR_NAME=$(ls *.jar | head -n 1)
-
-            echo "Stopping existing application..."
-            pkill -f 'java -jar' || true
-
-            echo "Starting new application..."
-            nohup java -jar $JAR_NAME > app.log 2>&1 &
-
-            echo "Deployment completed."
+            chmod +x start.sh || true
+            ./start.sh
+            
+            # nohup을 통해 터미널 종료되어도 프로세스 종료되지 않게 하고, nohub.out에 애플리케이션에서 생성되는 로그들 계속 남김
+            # log 계속 쌓이면 EC2 디스크 용량 부족해질 수 있으니 주기적으로 정리 필요한거 리마인드하기
+            
+            sleep 2
+            echo "실행 상태 확인"
+            ps -ef | grep "$JAR_NAME" || echo "실행 안 됨" # java 프로세스 잘 실행되고 있는지 확인
+            
+            sleep 15
+            sudo lsof -i:8080 || true  # 8080 포트로 애플리케이션이 잘 실행되고 있는지 확인
+            
+            echo "배포 성공 ~"
