@@ -8,6 +8,7 @@ import com.thinkfree.demowebsocket.common.dto.ApiResponseCode;
 import com.thinkfree.demowebsocket.circle.dto.UpdateCircleRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,7 @@ public class CircleController {
 
     @Operation(summary = "원 생성 (HTTP)", description = "그려진 원을 생성한다.")
     @PostMapping("/canvas/circles")
-    public ApiResponse<Circle> createCircle(@RequestBody CreateCircleRequest request) {
+    public ApiResponse<Circle> createCircle(@RequestBody @Valid CreateCircleRequest request) {
         Circle circle = circleService.createCircle(request);
         return ApiResponse.of(ApiResponseCode.CIRCLE_CREATED, circle);
     }

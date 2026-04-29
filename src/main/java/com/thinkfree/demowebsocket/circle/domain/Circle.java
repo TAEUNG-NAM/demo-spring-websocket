@@ -4,6 +4,7 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
@@ -16,14 +17,22 @@ public class Circle {
     private String id;
 
     private double x;
-
     private double y;
 
-    private double size;
+    @Builder.Default
+    private double size = 10.5;
 
-    private double r;
-    private double g;
-    private double b;
+    @Builder.Default
+    private double r = 0.111;
 
-    private double a;
+    @Builder.Default
+    private double g = 0.222;
+
+    @Builder.Default
+    private double b = 0.333;
+
+    @Builder.Default
+    private double a = 0.9;
+
+    private Long createdAt;
 }
