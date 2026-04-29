@@ -97,7 +97,7 @@
     const DEFAULT_CIRCLE_SIZE = 48;
 
     function connect() {
-        const socket = new WebSocket('ws://localhost:8080/ws');
+        const socket = new WebSocket('ws://134.185.91.228:8080/ws');
         stompClient = Stomp.over(socket);
         stompClient.debug = null;
 
